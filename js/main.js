@@ -69,10 +69,22 @@
         document.body.setAttribute('id', `show-scene-${currentScene}`);
     }
 
+    function calcValues(values, currentYOffset) {
+        
+    }
+
     function playAnimation() {
+        const objs = sceneInfo[currentScene].objs;
+        const values = sceneInfo[currentScene].values;
+        const currentYOffset = yOffset - prevScrollHeight;
+
         switch (currentScene) {
             case 0:
                 // console.log("0 play");
+                let messageA_opacity_0 = values.messageA_opacity[0];
+                let messageA_opacity_1 = values.messageA_opacity[1];
+
+                console.log(calcValues(values.messageA_opacity,currentYOffset));
                 break;
             case 1:
                 // console.log("1 play");
