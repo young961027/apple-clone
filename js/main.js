@@ -44,6 +44,18 @@
             sceneInfo[i].scrollHeight = sceneInfo[i].heightNum * window.innerHeight;
             sceneInfo[i].objs.container.style.height = `${sceneInfo[i].scrollHeight}px`;
         }
+
+        let totalScrollHeight = 0;
+        let yOffset = window.pageYOffset;
+
+        for (let i = 0; i < sceneInfo.length; i++) {
+            totalScrollHeight += sceneInfo[i].scrollHeight;
+            if (totalScrollHeight >= yOffset) {
+                currentScene = i;
+                break;
+            }
+        }
+        document.body.setAttribute('id', `show-scene-${currentScene}`);
     }
 
     let yOffset = 0; // window.pageYOffset 대신 쓸 변수
@@ -58,21 +70,25 @@
 
         if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
             currentScene++;
+            // document.body.setAttribute('id', `show-scene-${currentScene}`);
         }
 
         if (yOffset < prevScrollHeight) {
-            if (currentScene === 0) return;
+            if (currentScene === 0) return; // 브라우저 바운스 효과로 currentScene이 음수가 되는 것을 방지.
+            // document.body.setAttribute('id', `show-scene-${currentScene}`);
             currentScene--;
         }
 
-        console.log(currentScene);
+        document.body.setAttribute('id', `show-scene-${currentScene}`);
     }
 
-    window.addEventListener('resize',setLayout);
     window.addEventListener('scroll', () => {
         yOffset = window.pageYOffset;
         scrollLoop();
     });
+    window.addEventListener('DOMContentLoaded',setLayout);
+    // window.addEventListener('load',setLayout);
+    window.addEventListener('resize',setLayout);
 
     setLayout();
 
