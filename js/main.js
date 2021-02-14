@@ -10,9 +10,14 @@
                 messageA: document.querySelector('#scroll-section-0 .main-message.a'),
                 messageB: document.querySelector('#scroll-section-0 .main-message.b'),
                 messageC: document.querySelector('#scroll-section-0 .main-message.c'),
-                messageD: document.querySelector('#scroll-section-0 .main-message.d')
+                messageD: document.querySelector('#scroll-section-0 .main-message.d'),
+                canvas: document.querySelector('#video-canvas-0'),
+                context: document.querySelector('#video-canvas-0').getContext('2d'),
+                videoImages:[]
             },
             values: {
+                videoImageCount: 209,
+                imageSequence: [0,209],
                 messageA_opacity_in: [0,1, {start: 0.1, end: 0.2}],
                 messageA_translateY_in: [20, 0, {start: 0.1, end: 0.2}],
                 messageB_opacity_in: [0,1, {start: 0.3, end: 0.4}],
@@ -85,6 +90,20 @@
             }
         }
     ];
+
+    function setCanvasImages() {
+        let imgElem;
+        for (let i = 0; i < sceneInfo[0].values.videoImageCount; i++) {
+            imgElem = new Image();
+            let src;
+            if (i<10) src = `./videotest/yangpyeongkong/000${i+1}.jpg`;
+            else if (i<100) src = `./videotest/yangpyeongkong/00${i+1}.jpg`;
+            else src = `./videotest/yangpyeongkong/0${i+1}.jpg`;
+            imgElem.src = src;
+            console.log(imgElem);
+            sceneInfo[0].objs.videoImages.push(imgElem);
+        }
+    }
     
     let yOffset = 0; // window.pageYOffset 대신 쓸 변수
     let prevScrollHeight = 0; // 현재 스크롤 위치(yOffset)보다 이전에 위차한 스크롤 섹션들의 스크롤 높이의 합
@@ -149,6 +168,8 @@
 
         switch (currentScene) {
             case 0:
+                let sequence = Math.round(calcValues(values.imageSequence, currentYOffset));
+                objs.context.drawImage(objs.videoImages[sequence], 0, 0);
                 if (scrollRatio <= 0.22) {
                     objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currentYOffset);
                     objs.messageA.style.transform = `translateY(${calcValues(values.messageA_translateY_in, currentYOffset)}%)`;
@@ -177,9 +198,6 @@
                     objs.messageD.style.opacity = calcValues(values.messageD_opacity_out, currentYOffset);
                     objs.messageD.style.transform = `translateY(${calcValues(values.messageD_translateY_out, currentYOffset)}%)`;
                 }
-                break;
-            case 1:
-                // console.log("1 play");
                 break;
             case 2:
                 if (scrollRatio <= 0.27) {
@@ -251,6 +269,6 @@
     // window.addEventListener('load',setLayout);
     window.addEventListener('resize',setLayout);
 
+    setCanvasImages();
     setLayout();
-
 })();
