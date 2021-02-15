@@ -42,7 +42,7 @@
         {
             // 1
             type: 'normal',
-            heightNum: 5, // 브라우저 높이의 5배로 scrollHeight 세팅
+            // heightNum: 5, // 브라우저 높이의 5배로 scrollHeight 세팅
             scrollHeight: 0,
             objs: {
                 container: document.querySelector('#scroll-section-1'),
@@ -71,18 +71,18 @@
                 canvas_opacity_in: [0,1, {start: 0, end: 0.1}],
                 canvas_opacity_out: [1,0, {start: 0.95, end: 1}],
 				messageA_translateY_in: [20, 0, { start: 0.15, end: 0.2 }],
-				messageB_translateY_in: [30, 0, { start: 0.6, end: 0.65 }],
-				messageC_translateY_in: [30, 0, { start: 0.82, end: 0.87 }],
+				messageB_translateY_in: [30, 0, { start: 0.55, end: 0.65 }],
+				messageC_translateY_in: [30, 0, { start: 0.80, end: 0.87 }],
 				messageA_opacity_in: [0, 1, { start: 0.25, end: 0.3 }],
-				messageB_opacity_in: [0, 1, { start: 0.6, end: 0.65 }],
-				messageC_opacity_in: [0, 1, { start: 0.82, end: 0.87 }],
+				messageB_opacity_in: [0, 1, { start: 0.55, end: 0.65 }],
+				messageC_opacity_in: [0, 1, { start: 0.80, end: 0.87 }],
 				messageA_translateY_out: [0, -20, { start: 0.4, end: 0.45 }],
-				messageB_translateY_out: [0, -20, { start: 0.68, end: 0.73 }],
+				messageB_translateY_out: [0, -20, { start: 0.72, end: 0.77 }],
 				messageC_translateY_out: [0, -20, { start: 0.90, end: 0.95 }],
 				messageA_opacity_out: [1, 0, { start: 0.4, end: 0.45 }],
-				messageB_opacity_out: [1, 0, { start: 0.68, end: 0.73 }],
+				messageB_opacity_out: [1, 0, { start: 0.72, end: 0.77 }],
 				messageC_opacity_out: [1, 0, { start: 0.90, end: 0.95 }],
-				pinB_scaleY: [0.5, 1, { start: 0.6, end: 0.65 }],
+				pinB_scaleY: [0.5, 1, { start: 0.55, end: 0.65 }],
                 pinC_scaleY: [0.5, 1, { start: 0.82, end: 0.87 }]
             }
         },
@@ -92,7 +92,18 @@
             heightNum: 5, // 브라우저 높이의 5배로 scrollHeight 세팅
             scrollHeight: 0,
             objs: {
-                container: document.querySelector('#scroll-section-3')
+                container: document.querySelector('#scroll-section-3'),
+                canvasCaption: document.querySelector('.canvas-caption'),
+                canvas: document.querySelector('.image-blend-canvas'),
+                context: document.querySelector('.image-blend-canvas').getContext('2d'),
+                imagesPath: [
+                    './images/blend-image-1.jpeg',
+                    './images/blend-image-2.jpeg'
+                ],
+                images: []
+            },
+            values: {
+
             }
         }
     ];
@@ -117,6 +128,13 @@
             else src2 = `./videotest/chocokong01/0${i+1}.jpg`;
             imgElem2.src = src2;
             sceneInfo[2].objs.videoImages.push(imgElem2);
+        }
+
+        let imgElem3;
+        for (let i=0; i<sceneInfo[3].objs.imagesPath.length; i++) {
+            imgElem3 = new Image(2016,1512);
+            imgElem3.src = sceneInfo[3].objs.imagesPath[i];
+            sceneInfo[3].objs.images.push(imgElem3);
         }
     }
     
@@ -203,14 +221,14 @@
                     objs.messageB.style.opacity = calcValues(values.messageB_opacity_out, currentYOffset);
                     objs.messageB.style.transform = `translateY(${calcValues(values.messageB_translateY_out, currentYOffset)}%)`;
                 }
-                if (scrollRatio <= 0.62) {
+                if (scrollRatio <= 0.59) {
                     objs.messageC.style.opacity = calcValues(values.messageC_opacity_in, currentYOffset);
                     objs.messageC.style.transform = `translateY(${calcValues(values.messageC_translateY_in, currentYOffset)}%)`;
                 } else {
                     objs.messageC.style.opacity = calcValues(values.messageC_opacity_out, currentYOffset);
                     objs.messageC.style.transform = `translateY(${calcValues(values.messageC_translateY_out, currentYOffset)}%)`;
                 }
-                if (scrollRatio <= 0.82) {
+                if (scrollRatio <= 0.88) {
                     objs.messageD.style.opacity = calcValues(values.messageD_opacity_in, currentYOffset);
                     objs.messageD.style.transform = `translateY(${calcValues(values.messageD_translateY_in, currentYOffset)}%)`;
                 } else {
@@ -264,7 +282,21 @@
 
                 break;
             case 3:
-                // console.log("3 play");
+                // 가로 세로 모두 꽉 차게 하기 위해 여기서 세팅(계산 필요)
+				// const widthRatio = window.innerWidth / objs.canvas.width;
+				// const heightRatio = window.innerHeight / objs.canvas.height;
+				let canvasScaleRatio = window.innerHeight / objs.canvas.height;
+
+				// if (widthRatio <= heightRatio) {
+				// 	// 캔버스보다 브라우저 창이 홀쭉한 경우
+                //     canvasScaleRatio = heightRatio;
+				// } else {
+				// 	// 캔버스보다 브라우저 창이 납작한 경우
+                //     canvasScaleRatio = widthRatio;
+                // }
+                let imgHeight = objs.canvas.width*(objs.images[0].height/objs.images[0].width);
+                objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+                objs.context.drawImage(objs.images[0],0,0,objs.canvas.width,imgHeight);
                 break;
         }
     }
