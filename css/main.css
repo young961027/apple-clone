@@ -27,8 +27,9 @@ a {
   left: 0;
   z-index: 10;
   width: 100%;
-  height: 44px;
+  height: 45px;
   padding: 0 1rem;
+  background: white;
 }
 
 .local-nav {
@@ -71,28 +72,36 @@ a {
 }
 
 .scroll-section {
-  /* border: 3px solid rgb(127, 255, 212); */
+  position: relative;
   padding-top: 50vh;
 }
 
 #scroll-section-0 h1 {
+  position: relative;
+  top: -10vh;
+  z-index: 5;
   font-size: 4rem;
   text-align: center;
+  color: white;
 }
 
 .main-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   opacity: 0;
   margin: 5px 0;
-  display: flex;
-  justify-content: center;
   top: 35vh;
-  align-items: center;
   height: 3em;
-  font-size: 2.3rem;
+  font-size: 2.5rem;
+}
+
+#scroll-section-0 .main-message {
+  color: white;
 }
 
 .main-message p {
-  line-height: 1.1;
+  line-height: 1.2;
   font-weight: bold;
   text-align: center;
 }
@@ -121,9 +130,10 @@ a {
   font-size: 1.2rem;
   margin-bottom: 0.5em;
 }
-.desc-message {
-  width: 50%;
+.sticky-elem.desc-message {
+  width: 45%;
   font-weight: bold;
+  opacity: 0;
 }
 
 .pin {
@@ -132,16 +142,13 @@ a {
   background: rgb(29, 29, 31);
 }
 
-.desc-message.b,
-.pin.b {
-  top: 30%;
-  left: 60%;
-}
-
-.desc-message.c,
-.pin.c {
-  top: 50%;
+#scroll-section-2 .b {
+  top: 10%;
   left: 50%;
+}
+#scroll-section-2 .c {
+  top: 45%;
+  left: 40%;
 }
 
 .mid-message {
@@ -177,7 +184,7 @@ a {
   display: none;
   position: fixed;
   /* top: 0; */
-  /* left: 0; // pinB,C 때문에 일단 주석처리 */
+  left: 0;
   width: 100%;
 }
 
@@ -190,6 +197,13 @@ a {
 
 .sticky-elem-canvas {
   top: 0;
+  height: 100%;
+}
+
+.sticky-elem-canvas canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 
 @media (min-width: 1024px) {
@@ -205,14 +219,22 @@ a {
   .description strong {
     font-size: 6rem;
   }
-  #scroll-section-2 .main-message {
+  #scroll-section-02 .main-message {
     font-size: 6vw;
   }
   .main-message small {
     font-size: 1.5vw;
   }
-  .desc-message {
+  .sticky-elem .desc-message {
     width: 20%;
+  }
+  #scroll-section-2 .b {
+    top: 20%;
+    left: 53%;
+  }
+  #scroll-section-2 .c {
+    top: 60%;
+    left: 47%;
   }
   .mid-message {
     font-size: 4vw;
