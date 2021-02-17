@@ -285,17 +285,18 @@
                 break;
             case 3:
                 // 가로 세로 모두 꽉 차게 하기 위해 여기서 세팅(계산 필요)
-				// const widthRatio = window.innerWidth / objs.canvas.width;
-				// const heightRatio = window.innerHeight / objs.canvas.height;
-				let canvasScaleRatio = window.innerHeight / objs.canvas.height;
+				const widthRatio = window.innerWidth / objs.canvas.width;
+                const heightRatio = window.innerHeight / objs.canvas.height;
+                let canvasScaleRatio;
+				// let canvasScaleRatio = window.innerHeight / objs.canvas.height;
 
-				// if (widthRatio <= heightRatio) {
-				// 	// 캔버스보다 브라우저 창이 홀쭉한 경우
-                //     canvasScaleRatio = heightRatio;
-				// } else {
-				// 	// 캔버스보다 브라우저 창이 납작한 경우
-                //     canvasScaleRatio = widthRatio;
-                // }
+				if (widthRatio <= heightRatio) {
+					// 캔버스보다 브라우저 창이 홀쭉한 경우
+                    canvasScaleRatio = heightRatio;
+				} else {
+					// 캔버스보다 브라우저 창이 납작한 경우
+                    canvasScaleRatio = widthRatio;
+                }
                 let imgHeight = objs.canvas.width*(objs.images[0].height/objs.images[0].width);
                 objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
                 objs.context.drawImage(objs.images[0],0,0,objs.canvas.width,imgHeight);
@@ -305,10 +306,14 @@
                 // const recalculatedInnerHeight = window.innerHeight / canvasScaleRatio;
 
                 if (!values.rectStartY) {
-                    values.rectStartY = objs.canvas.getBoundingClientRect().top;
+                    // values.rectStartY = objs.canvas.getBoundingClientRect().top;
+                    values.rectStartY = objs.canvas.offsetTop + (objs.canvas.height - objs.canvas.height * canvasScaleRatio)/2;
+                    values.rect1X[2].start = (window.innerHeight / 2) / scrollHeight;
+                    values.rect2X[2].start = (window.innerHeight / 2) / scrollHeight;
                     values.rect1X[2].end = values.rectStartY / scrollHeight;
                     values.rect2X[2].end = values.rectStartY / scrollHeight;
                 }
+                
                 const whiteRectWidth = recalculatedInnerWidth*0.25;
                 values.rect1X[0] = (objs.canvas.width - recalculatedInnerWidth) / 2;
                 values.rect1X[1] = values.rect1X[0] - whiteRectWidth;
