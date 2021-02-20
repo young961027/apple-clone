@@ -89,7 +89,7 @@
         {
             // 3
             type: 'sticky',
-            heightNum: 5, // 브라우저 높이의 5배로 scrollHeight 세팅
+            heightNum: 7, // 브라우저 높이의 5배로 scrollHeight 세팅
             scrollHeight: 0,
             objs: {
                 container: document.querySelector('#scroll-section-3'),
@@ -106,7 +106,8 @@
                 rect1X: [ 0, 0, { start: 0, end: 0 }],
                 rect2X: [ 0, 0, { start: 0, end: 0 }],
                 blendHeight : [ 0, 0, { start: 0, end: 0 }],
-                rectStartY: 0
+                rectStartY: 0,
+                canvas_scale : [0,0, {start: 0, end:0 }]
             }
         }
     ];
@@ -381,7 +382,7 @@
                 } else {
                     step = 2;
                     // 이미지 블렌드
-                    // imageBlendY: [ 0, 0, { start: 0, end: 0 }]
+                    // blendHeight: [ 0, 0, { start: 0, end: 0 }]
                     values.blendHeight[0] = 0;
                     values.blendHeight[1] = objs.canvas.height;
                     values.blendHeight[2].start = values.rect1X[2].end;
@@ -394,6 +395,15 @@
                     );
                     objs.canvas.classList.add("sticky");
                     objs.canvas.style.top = `${0-(objs.canvas.height - objs.canvas.height * canvasScaleRatio)/2}px`;
+
+                    if (scrollRatio > values.blendHeight[2].end) {
+                        values.canvas_scale[0] = canvasScaleRatio;
+                        values.canvas_scale[1] = document.body.offsetWidth / (objs.canvas.width*1.5);
+                        values.canvas_scale[2].start = values.blendHeight[2].end;
+                        values.canvas_scale[2].end = values.canvas_scale[2].start + 0.2;
+
+                        objs.canvas.style.transform = `scale(${calcValues(values.canvas_scale, currentYOffset)}`;
+                    }
                 }
 
                 break;
