@@ -18,7 +18,7 @@
             values: {
                 videoImageCount: 209,
                 imageSequence: [0,208],
-                canvas_opacity: [1,0, {start: 0.95, end: 1}],
+                canvas_opacity: [1,0, {start: 0.93, end: 0.98}],
 
                 messageA_opacity_in: [0,1, {start: 0.1, end: 0.2}],
                 messageA_translateY_in: [20, 0, {start: 0.1, end: 0.2}],
@@ -52,7 +52,7 @@
         {
             // 2
             type: 'sticky',
-            heightNum: 5, // 브라우저 높이의 5배로 scrollHeight 세팅
+            heightNum: 6, // 브라우저 높이의 5배로 scrollHeight 세팅
             scrollHeight: 0,
             objs: {
                 container: document.querySelector('#scroll-section-2'),
@@ -69,7 +69,7 @@
                 videoImageCount: 368,
                 imageSequence: [0,367],
                 canvas_opacity_in: [0,1, {start: 0, end: 0.1}],
-                canvas_opacity_out: [1,0, {start: 0.95, end: 1}],
+                canvas_opacity_out: [1,0, {start: 0.93, end: 0.98}],
 				messageA_translateY_in: [20, 0, { start: 0.15, end: 0.2 }],
 				messageB_translateY_in: [30, 0, { start: 0.55, end: 0.65 }],
 				messageC_translateY_in: [30, 0, { start: 0.80, end: 0.87 }],
@@ -89,7 +89,7 @@
         {
             // 3
             type: 'sticky',
-            heightNum: 7, // 브라우저 높이의 5배로 scrollHeight 세팅
+            heightNum: 6, // 브라우저 높이의 5배로 scrollHeight 세팅
             scrollHeight: 0,
             objs: {
                 container: document.querySelector('#scroll-section-3'),
@@ -386,7 +386,7 @@
                     values.blendHeight[0] = 0;
                     values.blendHeight[1] = objs.canvas.height;
                     values.blendHeight[2].start = values.rect1X[2].end;
-                    values.blendHeight[2].end = values.blendHeight[2].start + 0.2;
+                    values.blendHeight[2].end = values.blendHeight[2].start + 0.15;
                     const blendHeight = calcValues(values.blendHeight, currentYOffset);
 
                     objs.context.drawImage(objs.images[1],
@@ -400,9 +400,16 @@
                         values.canvas_scale[0] = canvasScaleRatio;
                         values.canvas_scale[1] = document.body.offsetWidth / (objs.canvas.width*1.5);
                         values.canvas_scale[2].start = values.blendHeight[2].end;
-                        values.canvas_scale[2].end = values.canvas_scale[2].start + 0.2;
+                        values.canvas_scale[2].end = values.canvas_scale[2].start + 0.15;
 
                         objs.canvas.style.transform = `scale(${calcValues(values.canvas_scale, currentYOffset)}`;
+                        objs.canvas.style.marginTop = 0;
+                    }
+
+                    if (scrollRatio > values.canvas_scale[2].end
+                        && values.canvas_scale[2].end > 0) {
+                            objs.canvas.classList.remove("sticky");
+                            objs.canvas.style.marginTop = `${scrollHeight*0.3}px`;
                     }
                 }
 
