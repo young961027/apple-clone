@@ -105,7 +105,7 @@
             values: {
                 rect1X: [ 0, 0, { start: 0, end: 0 }],
                 rect2X: [ 0, 0, { start: 0, end: 0 }],
-                imageBlendY: [ 0, 0, { start: 0, end: 0 }],
+                blendHeight : [ 0, 0, { start: 0, end: 0 }],
                 rectStartY: 0
             }
         }
@@ -135,7 +135,7 @@
 
         let imgElem3;
         for (let i=0; i<sceneInfo[3].objs.imagesPath.length; i++) {
-            imgElem3 = new Image(2016,1512);
+            imgElem3 = new Image();
             imgElem3.src = sceneInfo[3].objs.imagesPath[i];
             sceneInfo[3].objs.images.push(imgElem3);
         }
@@ -382,7 +382,16 @@
                     step = 2;
                     // 이미지 블렌드
                     // imageBlendY: [ 0, 0, { start: 0, end: 0 }]
-                    objs.context.drawImage(objs.images[1], 0, 200);
+                    values.blendHeight[0] = 0;
+                    values.blendHeight[1] = objs.canvas.height;
+                    values.blendHeight[2].start = values.rect1X[2].end;
+                    values.blendHeight[2].end = values.blendHeight[2].start + 0.2;
+                    const blendHeight = calcValues(values.blendHeight, currentYOffset);
+
+                    objs.context.drawImage(objs.images[1],
+                        0, objs.canvas.height - blendHeight, objs.canvas.width, blendHeight,
+                        0, objs.canvas.height - blendHeight, objs.canvas.width, blendHeight
+                    );
                     objs.canvas.classList.add("sticky");
                     objs.canvas.style.top = `${0-(objs.canvas.height - objs.canvas.height * canvasScaleRatio)/2}px`;
                 }
