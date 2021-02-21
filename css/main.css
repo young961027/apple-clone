@@ -35,7 +35,6 @@ a {
   padding: 0 1rem;
   border-bottom: 1px solid #ddd;
   background: white;
-  opacity: 0.8;
 }
 
 .local-nav {
@@ -47,7 +46,13 @@ a {
   height: 52px;
   padding: 0 1rem;
   background: white;
-  opacity: 0.8;
+}
+
+.local-nav-sticky .local-nav {
+  position: fixed;
+  top: 0;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: saturate(180%) blur(15px);
 }
 
 .global-nav-link,

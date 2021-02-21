@@ -149,6 +149,14 @@
     let currentScene = 0; // 현재 활성화된(눈 앞에 보고있는) 씬(scroll-section)
     let enterNewScene = false; // 새로운 scene이 시작된 순간 true;
 
+    function checkMenu() {
+        if (yOffset > 44) {
+            document.body.classList.add('local-nav-sticky');
+        } else {
+            document.body.classList.remove('local-nav-sticky');
+        }
+    }
+
     function setLayout() {
         // 각 스크롤 섹션의 높이 세팅
         for (let i=0; i <sceneInfo.length; i++) {
@@ -450,6 +458,7 @@
 
         if (enterNewScene) return;
 
+        checkMenu();
         playAnimation();
     }
 
