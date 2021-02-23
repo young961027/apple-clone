@@ -1,4 +1,14 @@
 (() => {
+
+    let yOffset = 0; // window.pageYOffset 대신 쓸 변수
+    let prevScrollHeight = 0; // 현재 스크롤 위치(yOffset)보다 이전에 위차한 스크롤 섹션들의 스크롤 높이의 합
+    let currentScene = 0; // 현재 활성화된(눈 앞에 보고있는) 씬(scroll-section)
+    let enterNewScene = false; // 새로운 scene이 시작된 순간 true;
+    let acc = 0.1;
+    let delayedYOffset = 0;
+    let rafId;
+    let rafState;
+
     const sceneInfo = [
         {
             // 0
@@ -143,11 +153,6 @@
             sceneInfo[3].objs.images.push(imgElem3);
         }
     }
-    
-    let yOffset = 0; // window.pageYOffset 대신 쓸 변수
-    let prevScrollHeight = 0; // 현재 스크롤 위치(yOffset)보다 이전에 위차한 스크롤 섹션들의 스크롤 높이의 합
-    let currentScene = 0; // 현재 활성화된(눈 앞에 보고있는) 씬(scroll-section)
-    let enterNewScene = false; // 새로운 scene이 시작된 순간 true;
 
     function checkMenu() {
         if (yOffset > 44) {
@@ -218,8 +223,8 @@
 
         switch (currentScene) {
             case 0:
-                let sequence = Math.round(calcValues(values.imageSequence, currentYOffset));
-                objs.context.drawImage(objs.videoImages[sequence],0,0, sceneInfo[0].objs.canvas.width, sceneInfo[0].objs.canvas.height);
+                // let sequence = Math.round(calcValues(values.imageSequence, currentYOffset));
+                // objs.context.drawImage(objs.videoImages[sequence],0,0, sceneInfo[0].objs.canvas.width, sceneInfo[0].objs.canvas.height);
                 objs.canvas.style.opacity = calcValues(values.canvas_opacity, currentYOffset);
                 if (scrollRatio <= 0.22) {
                     objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currentYOffset);
@@ -251,8 +256,8 @@
                 }
                 break;
             case 2:
-                let sequence2 = Math.round(calcValues(values.imageSequence, currentYOffset));
-                objs.context.drawImage(objs.videoImages[sequence2],0,0, sceneInfo[2].objs.canvas.width, sceneInfo[2].objs.canvas.height);
+                // let sequence2 = Math.round(calcValues(values.imageSequence, currentYOffset));
+                // objs.context.drawImage(objs.videoImages[sequence2],0,0, sceneInfo[2].objs.canvas.width, sceneInfo[2].objs.canvas.height);
 
                 if (scrollRatio <= 0.5) {
                     objs.canvas.style.opacity = calcValues(values.canvas_opacity_in,currentYOffset);
@@ -443,13 +448,13 @@
             prevScrollHeight += sceneInfo[i].scrollHeight;
         }
 
-        if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
+        if (delayedYOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
             enterNewScene = true;
             currentScene++;
             document.body.setAttribute('id', `show-scene-${currentScene}`);
         }
 
-        if (yOffset < prevScrollHeight) {
+        if (delayedYOffset < prevScrollHeight) {
             enterNewScene = true;
             if (currentScene === 0) return; // 브라우저 바운스 효과로 currentScene이 음수가 되는 것을 방지.
             currentScene--;
@@ -462,9 +467,38 @@
         playAnimation();
     }
 
+    function loop() {
+        delayedYOffset = delayedYOffset + (pageYOffset - delayedYOffset) * acc;
+
+        if (!enterNewScene) {
+            if (currentScene === 0 || currentScene === 2) {
+            const currentYOffset = delayedYOffset - prevScrollHeight;
+            const objs = sceneInfo[currentScene].objs;
+            const values = sceneInfo[currentScene].values;
+                let sequence = Math.round(calcValues(values.imageSequence, currentYOffset));
+                if (objs.videoImages[sequence]) {
+                    objs.context.drawImage(objs.videoImages[sequence],0,0, sceneInfo[0].objs.canvas.width, sceneInfo[0].objs.canvas.height);
+                }
+            }
+        }
+
+        rafId = requestAnimationFrame(loop);
+
+        if (Math.abs(pageYOffset - delayedYOffset) < 1) {
+            cancelAnimationFrame(rafId);
+            rafState = false;
+        }
+    }
+
     window.addEventListener('scroll', () => {
         yOffset = window.pageYOffset;
         scrollLoop();
+        checkMenu();
+
+        if(!rafState) {
+            rafId = requestAnimationFrame(loop);
+            rafState = true;
+        }
     });
     window.addEventListener('load',() => {
         setLayout();
