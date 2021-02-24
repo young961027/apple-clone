@@ -99,7 +99,7 @@
         {
             // 3
             type: 'sticky',
-            heightNum: 6, // 브라우저 높이의 5배로 scrollHeight 세팅
+            heightNum: 7, // 브라우저 높이의 5배로 scrollHeight 세팅
             scrollHeight: 0,
             objs: {
                 container: document.querySelector('#scroll-section-3'),
@@ -490,20 +490,21 @@
         }
     }
 
-    window.addEventListener('scroll', () => {
-        yOffset = window.pageYOffset;
-        scrollLoop();
-        checkMenu();
-
-        if(!rafState) {
-            rafId = requestAnimationFrame(loop);
-            rafState = true;
-        }
-    });
     window.addEventListener('load',() => {
-        document.body.classList.remove('before-load');
+        document.body.classList.remove("before-load");
         setLayout();
         sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0, sceneInfo[0].objs.canvas.width, sceneInfo[0].objs.canvas.height);
+
+        window.addEventListener('scroll', () => {
+            yOffset = window.pageYOffset;
+            scrollLoop();
+            checkMenu();
+    
+            if(!rafState) {
+                rafId = requestAnimationFrame(loop);
+                rafState = true;
+            }
+        });
     });
     // window.addEventListener('load',setLayout);
     window.addEventListener('resize', () => {
@@ -516,9 +517,10 @@
     window.addEventListener('orientationchange', () => {
         setTimeout(setLayout, 500);
     });
-    document.querySelector('.loading').addEventListener('transitionend', (e) => {
-        document.body.removeChild(e.currentTarget);
-    });
+
+    // document.querySelector('.loading').addEventListener('transitionend', (e) => {
+    //     document.body.removeChild(e.currentTarget);
+    // });
 
     setCanvasImages();
     setLayout();
