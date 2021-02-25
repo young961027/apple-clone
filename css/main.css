@@ -63,17 +63,16 @@ body.before-load {
   backdrop-filter: saturate(180%) blur(15px);
 }
 
-.global-nav-link,
+.global-nav-links,
 .local-nav-links {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   max-width: 1000px;
   height: 100%;
   margin: 0 auto;
 }
 
-.local-nav-links {
+.global-nav-links {
   justify-content: space-between;
 }
 
@@ -184,7 +183,7 @@ body.before-load {
 }
 .canvas-caption {
   max-width: 1000px;
-  margin: -80rem auto 0;
+  margin: -100rem auto 0;
   padding: 0 1rem;
   color: #888;
   font-size: 1.2rem;
@@ -282,15 +281,15 @@ body.before-load {
 .loading-circle {
   width: 54px;
   height: 54px;
-  animation: loading-spin 2s infinite;
+  animation: loading-spin 3s infinite;
 }
 
 .loading-circle circle {
   stroke: black;
   stroke-width: 4;
-  stroke-dasharray: 157;
+  stroke-dasharray: 157, 157;
   stroke-dashoffset: 0;
-  fill: none; /* transparent로도 가능*/
+  fill: transparent;
   animation: loading-circle-ani 1s infinite;
 }
 
@@ -331,7 +330,7 @@ body.before-load {
     padding: 0;
   }
   .canvas-caption {
-    margin-top: -8rem;
+    margin-top: -80rem;
     font-size: 2rem;
     padding: 0;
   }

@@ -99,7 +99,7 @@
         {
             // 3
             type: 'sticky',
-            heightNum: 7, // 브라우저 높이의 5배로 scrollHeight 세팅
+            heightNum: 7, // 브라우저 높이의 6배로 scrollHeight 세팅
             scrollHeight: 0,
             objs: {
                 container: document.querySelector('#scroll-section-3'),
@@ -173,9 +173,9 @@
             sceneInfo[i].objs.container.style.height = `${sceneInfo[i].scrollHeight}px`;
         }
 
-        let totalScrollHeight = 0;
-        let yOffset = window.pageYOffset;
+        yOffset = window.pageYOffset;
 
+        let totalScrollHeight = 0;
         for (let i = 0; i < sceneInfo.length; i++) {
             totalScrollHeight += sceneInfo[i].scrollHeight;
             if (totalScrollHeight >= yOffset) {
@@ -463,7 +463,6 @@
 
         if (enterNewScene) return;
 
-        checkMenu();
         playAnimation();
     }
 
@@ -491,9 +490,25 @@
     }
 
     window.addEventListener('load',() => {
-        document.body.classList.remove("before-load");
+        setLayout();
+        document.body.classList.remove('before-load');
         setLayout();
         sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0, sceneInfo[0].objs.canvas.width, sceneInfo[0].objs.canvas.height);
+
+        let tempYOffset = yOffset;
+        let tempScrollCount = 0;
+        if (tempYOffset > 0) {
+            let siId = setInterval(() => {
+                scrollTo(0, tempYOffset);
+                tempYOffset += 5;
+
+                if (tempScrollCount > 20) {
+                    clearInterval(siId);
+                }
+
+                tempScrollCount++;
+            }, 20);
+        }
 
         window.addEventListener('scroll', () => {
             yOffset = window.pageYOffset;
