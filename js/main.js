@@ -78,7 +78,7 @@
             values: {
                 videoImageCount: 368,
                 imageSequence: [0,367],
-                canvas_opacity_in: [0,1, {start: 0, end: 0.1}],
+                canvas_opacity_in: [0,1, {start: 0.08, end: 0.13}],
                 canvas_opacity_out: [1,0, {start: 0.93, end: 0.98}],
 				messageA_translateY_in: [20, 0, { start: 0.15, end: 0.2 }],
 				messageB_translateY_in: [30, 0, { start: 0.55, end: 0.65 }],
@@ -524,13 +524,15 @@
     // window.addEventListener('load',setLayout);
     window.addEventListener('resize', () => {
         if (window.innerWidth > 900) {
-            setLayout();
-            sceneInfo[3].values.rectStartY = 0;
+            window.location.reload();
         }
     });
 
     window.addEventListener('orientationchange', () => {
-        setTimeout(setLayout, 500);
+        scrollTo(0,0);
+        setTimeout(() => {
+            window.location.reload();
+        }, 500);
     });
 
     // document.querySelector('.loading').addEventListener('transitionend', (e) => {
