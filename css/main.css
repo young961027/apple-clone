@@ -51,6 +51,7 @@ body.before-load {
   height: 52px;
   padding: 0 1rem;
   background: white;
+  border-bottom: 1px solid #ddd;
 }
 
 .local-nav-sticky .local-nav {
